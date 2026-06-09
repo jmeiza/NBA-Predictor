@@ -7,13 +7,14 @@ df_teams = pd.read_csv("teams.csv")
 df = df.dropna()
 
 print(df.shape) # (row,columns)
-# print(df.columns) # column names
+print(df.columns) # column names
+# print(df[['HOME_TEAM_ID','TEAM_ID_home','TEAM_ID_away']])
 # print(df.head()) # first 5 rows
 # print(df.isnull().sum()) # missing values
 
-print(df['HOME_TEAM_WINS'].mean())
+# print(df['HOME_TEAM_WINS'].mean())
 
-print(df_teams.shape) # (row,columns)
+# print(df_teams.shape) # (row,columns)
 # print(df_teams.columns) # column names
 # print(df_teams.head()) # first 5 rows
 # print(df_teams.isnull().sum()) # missing values
