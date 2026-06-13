@@ -19,6 +19,12 @@ away_stats = df.groupby('VISITOR_TEAM_ID')[['PTS_away','FG_PCT_away','AST_away',
 # NOTE: "left_on" refers to the DataFrame you are merging from (home_stats) and "right_on" refers to the DataFrame you're merging in (df_teams). It merges whenever home_Team_id and team_id match.
 home_stats = home_stats.merge(df_teams[['TEAM_ID','NICKNAME']], left_on='HOME_TEAM_ID', right_on='TEAM_ID')
 
+# Merging in the away stats
 complete_stats = home_stats.merge(away_stats, left_on='HOME_TEAM_ID', right_on='VISITOR_TEAM_ID')
 
-print(complete_stats[['NICKNAME', 'PTS_home', 'FG_PCT_home', 'AST_home', 'REB_home', 'HOME_TEAM_WINS','PTS_away','FG_PCT_away','AST_away','REB_away','AWAY_TEAM_WINS']])
+# Dropping the two columns since they are technically just duplicates of each other
+complete_stats = complete_stats.drop(columns=['HOME_TEAM_ID', 'VISITOR_TEAM_ID'])
+
+print(complete_stats.columns)
+
+complete_stats.to_csv("team_stats.csv", index=False)
