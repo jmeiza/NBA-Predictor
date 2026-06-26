@@ -1,4 +1,7 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
 df = pd.read_csv("games.csv")
 df_team_stats = pd.read_csv("team_stats.csv")
@@ -38,4 +41,19 @@ features = complete_stats[['label','HT_home_pts', 'HT_home_fg_pct', 'HT_home_ast
 
 # Split the features into X(inputs)and Y(output). The model predicts Y using X. 
 X = features.drop(columns=['label'])
+X['win_rate_diff'] = X['HT_home_win_rate'] - X['AT_away_win_rate']
 Y = features['label']
+
+# CODE FOR TRAINING THE MODEL
+
+## Step 1: We split the data into training data and testing data
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+## Step 2: Ceate and train (fit) the model
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+
+## Step 3: Evaluate the model
+predictions = model.predict(X_test) # Runs the model on the test data
+print(accuracy_score(y_test, predictions))  # Compares the preditions to the actua results
+
