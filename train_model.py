@@ -5,13 +5,13 @@ from sklearn.metrics import accuracy_score
 
 df_team_stats = pd.read_csv("team_stats.csv")
 
-
 # We are only keeping the columns the model will need to use to predict the winner.
 features = df_team_stats[['W_PCT_home', 'W_PCT_away','HOME_TEAM_WINS','home_rolling_win_rate','away_rolling_win_rate']]
 
 # Split the features into X(inputs)and Y(output). The model predicts Y using X. 
 X = features.drop(columns=['HOME_TEAM_WINS'])
 X['W_PCT_diff'] = X['W_PCT_home'] - X['W_PCT_away']
+X['ROLLING_WIN_RATE_diff'] = X['home_rolling_win_rate'] - X['away_rolling_win_rate']
 Y = features['HOME_TEAM_WINS']
 
 # CODE FOR TRAINING THE MODEL
