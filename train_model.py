@@ -7,7 +7,7 @@ df_team_stats = pd.read_csv("team_stats.csv")
 
 
 # We are only keeping the columns the model will need to use to predict the winner.
-features = df_team_stats[['W_PCT_home', 'W_PCT_away','HOME_TEAM_WINS']]
+features = df_team_stats[['W_PCT_home', 'W_PCT_away','HOME_TEAM_WINS','home_rolling_win_rate','away_rolling_win_rate']]
 
 # Split the features into X(inputs)and Y(output). The model predicts Y using X. 
 X = features.drop(columns=['HOME_TEAM_WINS'])
