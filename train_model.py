@@ -1,4 +1,5 @@
 import pandas as pd
+import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
@@ -26,4 +27,7 @@ model.fit(X_train, y_train)
 ## Step 3: Evaluate the model
 predictions = model.predict(X_test) # Runs the model on the test data
 print(accuracy_score(y_test, predictions))  # Compares the preditions to the actua results
+
+# Saving the model as a binary file so we can just load it later.
+pickle.dump(model, open('model.pkl', 'wb'))
 
