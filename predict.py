@@ -36,14 +36,23 @@ def predict_winner(home_team, away_team):
     }])
     
     # Passing the extracted data into the model
-    prediction = model.predict(input_data)
-    # 1 means that the home team wins and 0 means that the away team wins
-    if prediction[0] == 1:
-        return home_team
-    else:
-        return away_team
+    probabilities= model.predict_proba(input_data)
 
-print(predict_winner('Lakers', 'Celtics'))
+    # probabilities[0][0]: probability the home team loses
+    # probabilities[0][1]: probability the home team wins
+
+    if probabilities[0][0] > 0.5:
+        return f"{away_team} wins ({round(probabilities[0][0]*100, 1)}% confidence)"
+    elif probabilities[0][1] > 0.5:
+        return f"{home_team} wins ({round(probabilities[0][1]*100, 1)}% confidence)"
+    else:
+        return f"Too close to call - even odds"
+
+home_team = input("Enter home team: ")
+away_team = input("Enter away team: ")
+
+print(predict_winner(home_team, away_team))
+
 
 
     
