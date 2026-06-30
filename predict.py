@@ -14,4 +14,36 @@ def parse_l10(l10):
     return int(wins)/(int(wins) + int(losses))
 
 df_standings['rolling_win_rate'] = df_standings['L10'].apply(parse_l10)
-print(df_standings[['TeamName', 'WinPCT', 'rolling_win_rate']].head())
+
+# Now we parse the data so we can extract what the model needs
+def predict_winner(home_team, away_team):
+    # HT: Home Team, AT: Away Team
+    # iloc[] means select rows (or values) by their integer position. Like indexing into a list
+    HT_row = df_standings[df_standings['TeamName'] == home_team].iloc[0]
+    AT_row = df_standings[df_standings['TeamName'] == away_team].iloc[0]
+
+    HT_WinPCT, HT_rolling_win_rate = HT_row['WinPCT'], HT_row['rolling_win_rate'] 
+
+    AT_WinPCT, AT_rolling_win_rate = AT_row['WinPCT'], AT_row['rolling_win_rate']
+
+    input_data = pd.DataFrame([{
+        'W_PCT_home': HT_WinPCT,
+        'W_PCT_away': AT_WinPCT,
+        'home_rolling_win_rate': HT_rolling_win_rate,
+        'away_rolling_win_rate': AT_rolling_win_rate,
+        'W_PCT_diff': HT_WinPCT - AT_WinPCT,
+        'ROLLING_WIN_RATE_diff': HT_rolling_win_rate - AT_rolling_win_rate
+    }])
+    
+    # Passing the extracted data into the model
+    prediction = model.predict(input_data)
+    # 1 means that the home team wins and 0 means that the away team wins
+    if prediction[0] == 1:
+        return home_team
+    else:
+        return away_team
+
+print(predict_winner('Lakers', 'Celtics'))
+
+
+    
